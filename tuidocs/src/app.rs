@@ -3,6 +3,8 @@ use crate::{PageManager, State};
 pub struct App {
     pub page_manager: Box<dyn PageManager>,
     pub state: State,
+    pub input: String,
+    pub last_input: String,
 }
 
 impl App {
@@ -10,6 +12,8 @@ impl App {
         Self {
             page_manager,
             state: State::Reading,
+            input: String::new(),
+            last_input: String::new(),
         }
     }
 }

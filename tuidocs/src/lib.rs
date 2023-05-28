@@ -1,6 +1,6 @@
 use std::io::Stdout;
 
-use crossterm::event::{self, Event, KeyCode};
+use crossterm::event::{self, Event, KeyCode, KeyEventKind};
 use ratatui::{backend::CrosstermBackend, widgets::Paragraph, Frame, Terminal};
 
 pub mod error;
@@ -39,10 +39,19 @@ fn run_app(
                     KeyCode::Char('q') => break,
                     _ => {}
                 },
-                State::Searching => match key.code {
-                    KeyCode::Esc => app.state = State::Reading,
+                State::Searching if key.kind == KeyEventKind::Press => match key.code {
+                    KeyCode::Char(c) => app.input.push(c),
+                    KeyCode::Enter => {
+                        app.last_input = app.input.clone();
+                        app.state = State::Reading;
+                    },
+                    KeyCode::Esc => {
+                        app.input = app.last_input.clone();
+                        app.state = State::Reading;
+                    },
                     _ => {}
                 },
+                _ => {},
             }
         }
     }
@@ -52,10 +61,7 @@ fn run_app(
 
 fn ui(f: &mut Frame<CrosstermBackend<Stdout>>, app: &App) {
     f.render_widget(
-        Paragraph::new(match app.state {
-            State::Reading => "Reading",
-            State::Searching => "Searching",
-        }),
+        Paragraph::new(app.input.clone()),
         f.size(),
     );
 }
