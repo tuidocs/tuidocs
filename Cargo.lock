@@ -239,8 +239,10 @@ dependencies = [
 name = "tuidocs"
 version = "0.1.0"
 dependencies = [
+ "crossterm",
  "ratatui",
  "thiserror",
+ "unicode-width",
 ]
 
 [[package]]

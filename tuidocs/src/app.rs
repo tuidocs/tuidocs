@@ -1,17 +1,15 @@
-use crate::{PageManager, error};
+use crate::{PageManager, State};
 
 pub struct App {
-    _page_manager: Box<dyn PageManager>,
+    pub page_manager: Box<dyn PageManager>,
+    pub state: State,
 }
 
 impl App {
     pub fn new(page_manager: Box<dyn PageManager>) -> Self {
         Self {
-            _page_manager: page_manager,
+            page_manager,
+            state: State::Reading,
         }
-    }
-
-    pub fn run(self) -> Result<(), error::Error> {
-        Ok(())
     }
 }

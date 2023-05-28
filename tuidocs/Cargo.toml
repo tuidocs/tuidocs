@@ -7,4 +7,6 @@ edition = "2021"
 
 [dependencies]
 ratatui = "0.20.1"
+crossterm = "0.26.1"
 thiserror = "1.0.40"
+unicode-width = "0.1.10"
