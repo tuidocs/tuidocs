@@ -3,22 +3,27 @@ use std::collections::HashMap;
 use tuidocs::PageManager;
 
 struct TestPageManager {
-    _pages: HashMap<String, String>,
+    pages: HashMap<String, String>,
 }
 
 impl TestPageManager {
     pub fn new(pages: HashMap<String, String>) -> Self {
-        Self { _pages: pages }
+        Self { pages }
     }
 }
 
 impl PageManager for TestPageManager {
-    fn get_page(&self, _query: &str) -> Option<String> {
-        todo!()
+    fn get_page(&self, query: &str) -> Option<&String> {
+        self.pages.get(query)
     }
 
-    fn search(&self, _query: &str) -> Vec<(String, u32)> {
-        todo!()
+    fn search(&self, query: &str) -> Vec<(String, u32)> {
+        self.pages
+            .iter()
+            .map(|v| v.0.clone())
+            .filter(|v| v.contains(query))
+            .map(|v| (v, 0))
+            .collect()
     }
 }
 

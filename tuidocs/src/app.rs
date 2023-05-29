@@ -5,6 +5,7 @@ pub struct App {
     pub state: State,
     pub input: String,
     pub last_input: String,
+    pub selected_entry: usize,
 }
 
 impl App {
@@ -14,6 +15,7 @@ impl App {
             state: State::Reading,
             input: String::new(),
             last_input: String::new(),
+            selected_entry: 0,
         }
     }
 }

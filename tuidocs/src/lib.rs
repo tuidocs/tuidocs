@@ -1,7 +1,7 @@
 use std::io::Stdout;
 
 use crossterm::event::{self, Event, KeyCode, KeyEventKind};
-use ratatui::{backend::CrosstermBackend, widgets::Paragraph, Frame, Terminal};
+use ratatui::{backend::CrosstermBackend, Terminal};
 
 pub mod error;
 
@@ -13,6 +13,9 @@ pub use page_manager::PageManager;
 
 mod state;
 pub use state::State;
+
+mod ui;
+pub use ui::ui;
 
 pub fn run(page_manager: Box<dyn PageManager>) {
     let app = App::new(page_manager);
@@ -40,30 +43,46 @@ fn run_app(
                     _ => {}
                 },
                 State::Searching if key.kind == KeyEventKind::Press => match key.code {
-                    KeyCode::Char(c) => app.input.push(c),
+                    KeyCode::Char(c) => {
+                        app.input.push(c);
+                        if app.selected_entry >= app.page_manager.search(&app.input).len() {
+                            app.selected_entry = 0;
+                        }
+                    }
+                    KeyCode::Down => {
+                        if app.selected_entry < app.page_manager.search(&app.input).len() - 1 {
+                            app.selected_entry += 1;
+                        }
+                    }
+                    KeyCode::Up => {
+                        if app.selected_entry > 0 {
+                            app.selected_entry -= 1;
+                        }
+                    }
+                    KeyCode::Backspace => {
+                        app.input.pop();
+                    }
                     KeyCode::Enter => {
-                        app.last_input = app.input.clone();
-                        app.state = State::Reading;
-                    },
+                        if app.selected_entry < app.page_manager.search(&app.input).len() {
+                            app.input = app.page_manager.search(&app.input)[app.selected_entry]
+                                .0
+                                .clone();
+                            app.last_input = app.input.clone();
+                            app.state = State::Reading;
+                        }
+                    }
                     KeyCode::Esc => {
                         app.input = app.last_input.clone();
                         app.state = State::Reading;
-                    },
+                    }
                     _ => {}
                 },
-                _ => {},
+                _ => {}
             }
         }
     }
 
     Ok(())
-}
-
-fn ui(f: &mut Frame<CrosstermBackend<Stdout>>, app: &App) {
-    f.render_widget(
-        Paragraph::new(app.input.clone()),
-        f.size(),
-    );
 }
 
 fn create_terminal() -> Result<Terminal<CrosstermBackend<Stdout>>, error::Error> {
