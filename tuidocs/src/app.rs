@@ -6,6 +6,7 @@ pub struct App {
     pub input: String,
     pub last_input: String,
     pub selected_entry: usize,
+    pub scroll: u16,
 }
 
 impl App {
@@ -16,6 +17,7 @@ impl App {
             input: String::new(),
             last_input: String::new(),
             selected_entry: 0,
+            scroll: 0,
         }
     }
 }

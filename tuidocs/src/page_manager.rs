@@ -4,5 +4,5 @@ pub trait PageManager {
     fn get_page(&self, query: &str) -> Option<&String>;
     /// Search for pages.
     /// Return a list of pages with a line number to jump to
-    fn search(&self, query: &str) -> Vec<(String, u32)>;
+    fn search(&self, query: &str) -> Vec<(String, u16)>;
 }

@@ -39,6 +39,12 @@ fn run_app(
             match app.state {
                 State::Reading => match key.code {
                     KeyCode::Char('s') => app.state = State::Searching,
+                    KeyCode::Down => app.scroll += 1,
+                    KeyCode::Up => {
+                        if app.scroll > 0 {
+                            app.scroll -= 1
+                        }
+                    }
                     KeyCode::Char('q') => break,
                     _ => {}
                 },
@@ -64,9 +70,10 @@ fn run_app(
                     }
                     KeyCode::Enter => {
                         if app.selected_entry < app.page_manager.search(&app.input).len() {
-                            app.input = app.page_manager.search(&app.input)[app.selected_entry]
-                                .0
-                                .clone();
+                            let (input, scroll) =
+                                &app.page_manager.search(&app.input)[app.selected_entry];
+                            app.input = input.clone();
+                            app.scroll = *scroll - 1;
                             app.last_input = app.input.clone();
                             app.state = State::Reading;
                         }

@@ -5,7 +5,7 @@ use ratatui::{
     layout::{Constraint, Direction, Layout},
     style::{Color, Modifier, Style},
     text::{Span, Spans, Text},
-    widgets::{Block, BorderType, Borders, List, ListItem, Paragraph},
+    widgets::{Block, BorderType, Borders, List, ListItem, Paragraph, Wrap},
     Frame,
 };
 use unicode_width::UnicodeWidthStr;
@@ -34,6 +34,7 @@ pub fn ui(f: &mut Frame<CrosstermBackend<Stdout>>, app: &App) {
                 Span::raw(" to exit, "),
                 Span::styled("s", Style::default().add_modifier(Modifier::BOLD)),
                 Span::raw(" to start searching."),
+                Span::raw(format!("{}", app.scroll)),
             ],
             Style::default().add_modifier(Modifier::RAPID_BLINK),
         ),
@@ -82,7 +83,9 @@ pub fn ui(f: &mut Frame<CrosstermBackend<Stdout>>, app: &App) {
             Paragraph::new(match app.page_manager.get_page(&app.input) {
                 Some(page) => page.clone(),
                 None => "This page doesn't exist".to_string(),
-            }),
+            })
+            .scroll((app.scroll, 0))
+            .wrap(Wrap { trim: true }),
             chunks[2],
         ),
         State::Searching => {
