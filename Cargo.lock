@@ -58,16 +58,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8c1bba4f227a4a53d12b653f50ca7bf10c9119ae2aba56aff9e0338b5c98f36a"
 
 [[package]]
-name = "example_tuidocs"
-version = "0.1.0"
-dependencies = [
- "faker_rand",
- "lipsum",
- "rand",
- "tuidocs",
-]
-
-[[package]]
 name = "faker_rand"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -239,13 +229,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "rust_tuidocs"
-version = "0.1.0"
-dependencies = [
- "tuidocs",
-]
-
-[[package]]
 name = "scopeguard"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -323,6 +306,9 @@ name = "tuidocs"
 version = "0.1.0"
 dependencies = [
  "crossterm",
+ "faker_rand",
+ "lipsum",
+ "rand",
  "ratatui",
  "thiserror",
  "unicode-width",
