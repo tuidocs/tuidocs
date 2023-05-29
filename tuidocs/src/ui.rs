@@ -34,7 +34,6 @@ pub fn ui(f: &mut Frame<CrosstermBackend<Stdout>>, app: &App) {
                 Span::raw(" to exit, "),
                 Span::styled("s", Style::default().add_modifier(Modifier::BOLD)),
                 Span::raw(" to start searching."),
-                Span::raw(format!("{}", app.scroll)),
             ],
             Style::default().add_modifier(Modifier::RAPID_BLINK),
         ),

@@ -2,5 +2,5 @@
 members = [
     "tuidocs",
     "implementations/rust_tuidocs",
-    "implementations/test_tuidocs",
+    "implementations/example_tuidocs",
 ]
